@@ -159,6 +159,15 @@
   }
   @media(max-width:420px){.brandname{font-size:19px}h1{font-size:39px}blockquote.small{font-size:24px}}
   @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation-duration:.01ms !important;transition-duration:.01ms !important}}
+  .dipmode{display:none;width:min(calc(100% - 72px),1280px);margin:0 auto;padding:38px 0 70px}
+  .dipmode.show{display:block}
+  .dipcard{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:23px;margin-top:24px;box-shadow:0 24px 70px rgba(31,43,38,.08)}
+  .dipver{border:1px solid var(--line);border-top:4px solid var(--green);border-radius:10px;padding:20px 24px;margin-top:16px;background:var(--surface)}
+  .dipver h3{font-family:'Newsreader',Georgia,serif;font-size:22px;font-weight:500;margin:0 0 6px}
+  .dipver .dlabel{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--green)}
+  .dipver p{margin:6px 0}
+  .dipver .why{font-size:12px;color:var(--muted)}
+  .previewtag{display:inline-block;background:var(--coral-soft);color:#8a2e1d;border:1px solid rgba(233,103,78,.4);border-radius:999px;padding:4px 10px;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
 </style>
 </head>
 <body>
@@ -167,6 +176,7 @@
     <a class="brand" href="#" onclick="return false" aria-label="Speak Clean home"><span class="brandmark"><i></i><i></i><i></i><i></i></span><span class="brandname">Speak Clean</span></a>
     <span class="purpose">Practice clearer communication</span>
     <span class="spacer"></span>
+    <button class="resetbtn" id="dipToggle" type="button">🎩 <span>Speak Like a Diplomat (preview)</span></button>
     <button class="resetbtn" id="startOverTop" type="button">↻ <span>Start over</span></button>
   </header>
   <div class="frame">
@@ -284,6 +294,30 @@
         </div>
       </section>
     </main>
+  </div>
+  <div class="dipmode" id="dipMode">
+    <p class="kicker">Preview mode — not on the main site</p>
+    <h1>Speak like a <i>diplomat.</i></h1>
+    <p class="intro">A diplomat does not change what you mean. A diplomat changes how it lands: acknowledge first, separate the person from the problem, and keep the commitment exactly as you said it. <span class="previewtag">Preview</span></p>
+    <p class="intro small" style="margin-top:12px"><b>Hard rule in this preview:</b> no version invents a date, deadline, promise, or deliverable you did not already give. If you did not promise a day, no version will promise one. If you did promise one, that same day is kept, and no other day is added.</p>
+    <div class="dipcard">
+      <p class="cardlabel"><span>What they said</span></p>
+      <textarea id="dipThey" placeholder="Example: This is taking too long, I expected this yesterday." rows="3" style="min-height:90px"></textarea>
+      <p class="cardlabel" style="margin-top:18px"><span>What you said, or want to say</span></p>
+      <textarea id="dipMine" placeholder="Example: Sorry, I am busy, I will try to finish soon." rows="3" style="min-height:90px"></textarea>
+      <div class="row">
+        <button class="primary" id="dipBtn" type="button">Show me 3 diplomatic ways →</button>
+        <button class="textbtn" id="dipExample" type="button">Try the example</button>
+        <button class="textbtn" id="dipBack" type="button">← Back to practice</button>
+      </div>
+      <div class="row"><span class="status" id="dipStatus"></span></div>
+    </div>
+    <div id="dipOut"></div>
+    <div class="dipcard" id="dipLesson" style="display:none">
+      <p class="cardlabel"><span>Diplomat&rsquo;s note — what to learn from this</span></p>
+      <p id="dipLessonText" style="font-size:14px;line-height:1.7;color:var(--muted)"></p>
+      <p style="font-size:12px;color:var(--muted)">Diplomat&rsquo;s toolkit used here: acknowledge before answering, separate the person from the problem, focus on the shared interest instead of the position, use soft language like could, would, and it seems, and ask a question instead of giving an order. This is the training part: read why each version works, then use the words in your own voice.</p>
+    </div>
   </div>
   <footer><span class="fbrand">Speak Clean</span><span>Less polishing for you. More learning with you.</span><span class="spacer"></span><span>Browser mic works best in Chrome</span></footer>
 </div>
@@ -432,6 +466,42 @@ $('finishPractice').onclick=()=>{ if(typePass) setStage(5); };
 document.querySelectorAll('.nocopy').forEach(el=>{ el.addEventListener('copy',e=>e.preventDefault()); el.addEventListener('cut',e=>e.preventDefault()); el.addEventListener('contextmenu',e=>e.preventDefault()); el.addEventListener('dragstart',e=>e.preventDefault()); });
 document.addEventListener('copy',e=>{ const sel=window.getSelection(); if(sel&&sel.anchorNode&&sel.anchorNode.parentElement&&sel.anchorNode.parentElement.closest('.nocopy')) e.preventDefault(); });
 $('copyBtn').onclick=async()=>{ try{ await navigator.clipboard.writeText(cleanText); $('copyBtn').textContent='✓ Copied'; $('copyStatus').textContent='✓ Copied. Now paste it into your AI chat yourself.'; $('copyStatus').className='status ok'; }catch(e){ $('copyStatus').textContent='Copy failed in this browser.'; } };
+const frameEl=document.querySelector('.frame'), dipEl=$('dipMode');
+function showDip(show){
+  dipEl.classList.toggle('show', show);
+  frameEl.style.display=show?'none':'grid';
+  $('dipToggle').textContent=show?'🎩 Back to practice':'🎩 Speak Like a Diplomat (preview)';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+$('dipToggle').onclick=()=>showDip(!dipEl.classList.contains('show'));
+$('dipBack').onclick=()=>showDip(false);
+$('dipExample').onclick=()=>{
+  $('dipThey').value='This is taking too long, I expected this yesterday.';
+  $('dipMine').value='Sorry, I am busy, I will try to finish soon.';
+};
+$('dipBtn').onclick=async()=>{
+  const they=$('dipThey').value.trim(), mine=$('dipMine').value.trim();
+  if(!mine){ $('dipStatus').textContent='Write what you said, or want to say, first.'; $('dipStatus').className='status soft'; return; }
+  $('dipStatus').textContent='Thinking like a diplomat…'; $('dipStatus').className='status'; $('dipBtn').disabled=true;
+  try{
+    const res=await fetch('/api/diplomat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({they, mine})});
+    const data=await res.json(); if(!res.ok) throw new Error(data.error||'Diplomat step failed');
+    const out=$('dipOut'); out.innerHTML='';
+    (data.versions||[]).forEach(v=>{
+      const d=document.createElement('div'); d.className='dipver';
+      d.innerHTML='<p class="dlabel">'+v.label+'</p><h3></h3><p class="why"></p>';
+      d.querySelector('h3').textContent=v.text||'';
+      d.querySelector('.why').textContent='Why this works: '+(v.why||'');
+      const b=document.createElement('button'); b.className='primary'; b.type='button'; b.textContent='📋 Copy this version';
+      b.onclick=async()=>{ try{ await navigator.clipboard.writeText(v.text||''); b.textContent='✓ Copied'; }catch(e){ b.textContent='Copy failed'; } };
+      d.appendChild(b); out.appendChild(d);
+    });
+    $('dipLessonText').textContent=data.lesson||'';
+    $('dipLesson').style.display=(data.lesson?'block':'none');
+    $('dipStatus').textContent='Done. Same meaning, no new promise added.'; $('dipStatus').className='status ok';
+  }catch(err){ $('dipStatus').textContent='Could not get diplomatic versions: '+err.message; $('dipStatus').className='status soft'; }
+  finally{ $('dipBtn').disabled=false; }
+};
 setStage(1);
 </script>
 </body>

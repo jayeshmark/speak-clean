@@ -1,4 +1,6 @@
 // Vercel serverless function, PREVIEW ONLY on the diplomat review branch.
+// Preview redeploy trigger 2026-11-01: fresh preview deployment so the
+// GROQ_API_KEY scope change (Production + Preview) is picked up.
 // Keys live only in Vercel env vars, never in code or chat. Groq only, GROQ_API_KEY.
 // Hard rule, from Jayesh's correction: a diplomatic rewrite must NOT invent a
 // commitment the user did not make. No new date, deadline, promise, number,

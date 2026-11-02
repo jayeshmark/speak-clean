@@ -314,8 +314,9 @@
     <div class="dipcard">
       <p class="cardlabel"><span>What they said</span></p>
       <textarea id="dipThey" placeholder="Example: This is taking too long, I expected this yesterday." rows="3" style="min-height:90px"></textarea>
-      <p class="cardlabel" style="margin-top:18px"><span>What you said, or want to say</span></p>
+      <p class="cardlabel" style="margin-top:18px"><span>What you feel like saying — your honest thought</span></p>
       <textarea id="dipMine" placeholder="Example: Sorry, I am busy, I will try to finish soon." rows="3" style="min-height:90px"></textarea>
+      <p style="font-size:12px;color:var(--muted);margin-top:6px">This does not have to be a line you could safely say out loud. Write what you feel, and the diplomat versions turn it into something you could actually say and still be safe the next day.</p>
       <div class="row">
         <button class="primary" id="dipBtn" type="button">Show me 3 diplomatic ways →</button>
         <button class="textbtn" id="dipExample" type="button">Try the example</button>
@@ -488,15 +489,15 @@ $('dipToggle').onclick=()=>showDip(!dipEl.classList.contains('show'));
 $('dipBack').onclick=()=>showDip(false);
 const DIP_EXAMPLES=[
  {tag:'Client · Delay', title:'1. A client is angry about a delay', they:'This is taking too long, I expected this yesterday.', mine:'Sorry, I am busy, I will try to finish soon.'},
- {tag:'Boss · Boundaries', title:'2. Your boss asks you to work the weekend', they:'I need you to work this weekend, the team is behind.', mine:'No, I cannot do that, I have my own plans.'},
- {tag:'Client · Price', title:'3. A client asks for a discount you cannot give', they:'Your price is too high, can you do it for less or I will go elsewhere?', mine:'No, this is our price, take it or leave it.'},
- {tag:'Work · Credit', title:'4. A teammate takes credit for your work in a meeting', they:'As I was saying, my idea is what made this project work.', mine:'That was actually my idea, you are lying.'},
- {tag:'Client · Mistake', title:'5. A client is angry about a mistake you made', they:'You got this wrong, this is unacceptable, I trusted you with this.', mine:'It was not fully my fault, there were other problems too.'},
- {tag:'Work · Criticism', title:'6. Your manager criticises you in front of the team', they:'This work is not good enough, you need to do much better than this.', mine:'You are always criticising me, you never appreciate anything I do.'},
- {tag:'Friend · Plans', title:'7. A friend cancels plans at the last minute, again', they:'Sorry, I cannot make it today, something came up again.', mine:'You always do this, you clearly do not care about meeting me.'},
- {tag:'Work · Interruptions', title:'8. A colleague keeps interrupting you in meetings', they:'Sorry, but let me just jump in here, I think you are missing the point.', mine:'Stop interrupting me, let me finish talking.'},
- {tag:'Work · Saying no', title:'9. You need to say no to extra work without sounding unhelpful', they:'Can you also take on this extra project on top of your current work?', mine:'No, I already have too much work, I cannot do more.'},
- {tag:'Personal · Listening', title:'10. Someone close says you never listen to them', they:'You are always on your phone, you never actually listen to me.', mine:'That is not true, I do listen, you are overreacting.'}
+ {tag:'Boss · Boundaries', title:'2. Your boss asks you to work the weekend', they:'I need you to work this weekend, the team is behind.', mine:'I really do not want to work this weekend, I have personal plans, but I also do not want to look unhelpful to my boss.'},
+ {tag:'Client · Price', title:'3. A client asks for a discount you cannot give', they:'Your price is too high, can you do it for less or I will go elsewhere?', mine:'I do not want to lower the price, the work is worth it, but I do not want to lose the client.'},
+ {tag:'Work · Credit', title:'4. A teammate takes credit for your work in a meeting', they:'As I was saying, my idea is what made this project work.', mine:'I want the credit for my idea, but I do not want to accuse my teammate in front of everyone.'},
+ {tag:'Friend · Money', title:'5. A friend asks to borrow money, again', they:'Can you lend me some money again? I will pay you back soon, I promise this time.', mine:'I want to say no, I am tired of lending and not getting it back, but I do not want to lose the friendship.'},
+ {tag:'Family · Career', title:'6. A relative questions your career at a family function', they:'When will you get a proper job? This online work is not a real career.', mine:'I want to tell them to mind their own business, my work is real, but I do not want a fight at a family function.'},
+ {tag:'Personal · Listening', title:'7. Someone close says you never listen to them', they:'You are always on your phone, you never actually listen to me.', mine:'I feel attacked, I do listen, I just get distracted, and I do not want this to become a fight.'},
+ {tag:'Home · Rent', title:'8. Your landlord raises the rent', they:'Rent is going up next month, everyone is paying more now.', mine:'I want to push back, I cannot afford a big increase, but I do not want trouble with my landlord.'},
+ {tag:'Work · Criticism', title:'9. Your manager criticises you in front of the team', they:'This work is not good enough, you need to do much better than this.', mine:'I feel embarrassed being called out in front of everyone, I want to defend my work without arguing.'},
+ {tag:'Friend · Plans', title:'10. A friend cancels plans at the last minute, again', they:'Sorry, I cannot make it today, something came up again.', mine:'I am frustrated, this keeps happening, and I do not want to sound needy or angry.'}
 ];
 (function renderExamples(){
   const list=$('exList'); if(!list) return;
